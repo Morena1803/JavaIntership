@@ -41,7 +41,7 @@ DELETE FROM kursi WHERE id = 8;
 
 
 --Shtoni nje tabele student m fushat: id, emri, email, birth date, phone number, pike dhe 
-foreign key id e tabeles internship
+--foreign key id e tabeles internship
 CREATE TABLE student (
 id serial PRIMARY KEY , 
 emri VARCHAR(50),
@@ -52,6 +52,7 @@ pike int,
 student_key int , 
 FOREIGN KEY (student_key) REFERENCES kursi (id)
 );
+
 
 --Mbusheni tabelen me te dhena
 INSERT INTO student (emri , email , birth_date , phone_number , pike  , student_key) VALUES 
@@ -76,7 +77,7 @@ RENAME COLUMN  emri to name;
 SELECT * FROM student; 
 
 
---Listoni te gjithe studentet qe emri iu fillon me A 
+-- Listoni te gjithe studentet qe emri iu fillon me A 
 SELECT * FROM student
 WHERE emri LIKE 'A%'
 
@@ -85,8 +86,62 @@ WHERE emri LIKE 'A%'
 SELECT * FROM kursi
 WHERE create_date BETWEEN '2023-01-01' AND '2025-12-31';
 
-
-// Listoni studentet qe jane me te medhenj se 25 vjec
+-- Listoni studentet qe jane me te medhenj se 25 vjec
 SELECT emri , EXTRACT(YEAR FROM AGE(birth_date)) AS mosha
 FROM student
 WHERE EXTRACT(YEAR FROM AGE(birth_date)) > 15;
+
+
+
+--funksionet count, avg, sum, group by, order by
+SELECT COUNT(id)
+FROM student;
+
+SELECT AVG(kohezgjatja)
+FROM kursi;
+
+SELECT SUM (pike)
+FROM student;
+
+SELECT COUNT(id)
+FROM student
+GROUP BY student_key;
+
+
+SELECT * FROM student
+ORDER BY pike;
+
+--beni select duke bere join mes 2 tabelave te ushtrimeve te djeshme
+SELECT 
+kursi.emri_kursit AS emri_kursit,
+student.name AS emri,
+student.email AS emaili
+FROM kursi
+INNER JOIN student ON kursi.id=student.student_key;
+
+--Shtoni nje tabele tjeter qe ta lidhni me foreign key
+CREATE TABLE rregjistrim_studenti (
+    id SERIAL PRIMARY KEY,
+    student_id INT,
+    kurs_id INT ,
+    data_regjistrimit TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES student(id),
+    FOREIGN KEY (kurs_id) REFERENCES kursi(id)
+);
+
+
+INSERT INTO rregjistrim_studenti(student_id, kurs_id) VALUES
+(11, 1),  
+(12, 3),  
+(13, 4),  
+(14, 5),  
+(15, 5),  
+(16, 7),  
+(17, 2), 
+(18, 4),  
+(19, 6),  
+(11, 6);  
+
+
+
+
