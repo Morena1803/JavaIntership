@@ -9,7 +9,7 @@ public class Studentt {
         for (Map.Entry<String, String> entry : columns.entrySet()) {
             sb.append(entry.getKey()).append(" ").append(entry.getValue()).append(", ");
         }
-        sb.setLength(sb.length() - 2); // heq presjen dhe hapësiren e fundit
+        sb.setLength(sb.length() - 2); //per te hequr presjen dhe hapesiren e fundit
         sb.append(")");
         try (Statement stmt = DBConnection.getConnection().createStatement()) {
             stmt.executeUpdate(sb.toString());
